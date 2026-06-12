@@ -588,3 +588,349 @@ This program is a derivative of the QEMU CPU emulator (www.qemu.org).
 [exit=0]
 
 $ android list sdk 2>/dev/null | head -40
+Refresh Sources:
+  Fetching https://dl-ssl.google.com/android/repository/addons_list-2.xml
+  Failed to fetch URL https://dl-ssl.google.com/android/repository/addons_list-2.xml, reason: Connection to https://dl-ssl.google.com refused
+  Fetched Add-ons List successfully
+  Refresh Sources
+  Fetching URL: https://dl-ssl.google.com/android/repository/repository-7.xml
+  Failed to fetch URL https://dl-ssl.google.com/android/repository/repository-7.xml, reason: HttpHostConnect Connection to https://dl-ssl.google.com refused
+Refresh Sources:
+  Fetching URL: https://dl-ssl.google.com/android/repository/repository-7.xml
+  Failed to fetch URL https://dl-ssl.google.com/android/repository/repository-7.xml, reason: HttpHostConnect Connection to https://dl-ssl.google.com refused
+Refresh Sources:
+  Fetching URL: https://dl-ssl.google.com/android/repository/repository-7.xml
+  Failed to fetch URL https://dl-ssl.google.com/android/repository/repository-7.xml, reason: HttpHostConnect Connection to https://dl-ssl.google.com refused
+Packages available for installation or update: 0
+[exit=0]
+
+$ aapt version
+Android Asset Packaging Tool, v0.2
+[exit=0]
+
+$ aapt2 version
+sh: 1: aapt2: not found
+[exit=127]
+
+$ dx --version
+dx version 1.7
+[exit=0]
+
+$ d8 --version
+sh: 1: d8: not found
+[exit=127]
+
+$ zipalign 2>&1 | head -30
+Zip alignment utility
+Copyright (C) 2009 The Android Open Source Project
+
+Usage: zipalign [-f] [-v] <align> infile.zip outfile.zip
+       zipalign -c [-v] <align> infile.zip
+
+  <align>: alignment in bytes, e.g. '4' provides 32-bit alignment
+  -c: check alignment only (does not modify file)
+  -f: overwrite existing outfile.zip
+  -v: verbose output
+[exit=0]
+
+$ apksigner version
+sh: 1: apksigner: not found
+[exit=127]
+
+$ apktool --version
+1.5.2
+[exit=1]
+
+$ smali --version
+smali 1.4.2 (http://smali.googlecode.com)
+Copyright (C) 2010 Ben Gruver (JesusFreke@JesusFreke.com)
+BSD license (http://www.opensource.org/licenses/bsd-license.php)
+[exit=0]
+
+$ baksmali --version
+baksmali 1.4.2 (http://smali.googlecode.com)
+Copyright (C) 2010 Ben Gruver (JesusFreke@JesusFreke.com)
+BSD license (http://www.opensource.org/licenses/bsd-license.php)
+[exit=0]
+
+$ d2j-dex2jar --version
+ERROR: Unrecognized option: --version, --help for detail help
+[exit=0]
+
+$ jadx --version
+sh: 1: jadx: not found
+[exit=127]
+
+========== Likely Android SDK Directories ==========
+
+========== Common Tool File Search ==========
+
+$ find "/home/softsec" /opt /usr/local /usr/lib /usr/share -maxdepth 5 -type f \( -name 'apktool*' -o -name 'smali*.jar' -o -name 'baksmali*.jar' -o -name 'dex2jar*' -o -name 'd2j-dex2jar*' -o -name 'jadx*' -o -name 'aapt' -o -name 'dx' -o -name 'd8' -o -name 'adb' -o -name 'zipalign' -o -name 'apksigner' \) 2>/dev/null | sort | head -300
+/home/softsec/Downloads/adt-bundle-linux-x86_64-20131030/sdk/platform-tools/adb
+/home/softsec/Downloads/adt-bundle-linux-x86_64-20131030/sdk/tools/zipalign
+/home/softsec/Downloads/APIMonitor-beta/smali/baksmali.jar
+/home/softsec/Downloads/APIMonitor-beta/smali/smali.jar
+/home/softsec/Downloads/crackme/apktool.yml
+/home/softsec/Downloads/SoftSec/tools/apktools/apktool.jar
+/home/softsec/Downloads/SoftSec/tools/dex2jar/d2j-dex2jar.bat
+/home/softsec/Downloads/SoftSec/tools/dex2jar/d2j-dex2jar.sh
+/home/softsec/Downloads/SoftSec/tools/dex2jar/dex2jar.bat
+/home/softsec/Downloads/SoftSec/tools/dex2jar/dex2jar.sh
+/home/softsec/Downloads/SoftSec/tools/smali/baksmali-1.3.2.jar
+/home/softsec/Downloads/SoftSec/tools/smali/smali-1.3.2.jar
+/usr/share/adt-bundle/sdk1/platform-tools/aapt
+/usr/share/adt-bundle/sdk1/platform-tools/adb
+/usr/share/adt-bundle/sdk1/platform-tools/dx
+/usr/share/adt-bundle/sdk1/sdk/platform-tools/aapt
+/usr/share/adt-bundle/sdk1/sdk/platform-tools/adb
+/usr/share/adt-bundle/sdk1/sdk/platform-tools/dx
+/usr/share/adt-bundle/sdk/platform-tools/aapt
+/usr/share/adt-bundle/sdk/platform-tools/adb
+/usr/share/adt-bundle/sdk/platform-tools/dx
+/usr/share/adt-bundle/sdk/tools/zipalign
+/usr/share/apktool/apktool.jar
+/usr/share/dex2jar/d2j-dex2jar.sh
+/usr/share/dex2jar/dex2jar.sh
+/usr/share/santoku/menu-icons/apktool.png
+/usr/share/santoku/menu-icons/dex2jar.png
+/usr/share/smali/baksmali-1.4.2.jar
+/usr/share/smali/smali-1.4.2.jar
+[exit=0]
+
+========== ADB Devices And Android Target ==========
+
+$ timeout 10 adb devices -l
+* daemon not running. starting it now on port 5037 *
+* daemon started successfully *
+List of devices attached 
+
+[exit=0]
+
+$ timeout 10 adb get-state
+unknown
+[exit=0]
+
+$ timeout 10 adb shell getprop ro.build.version.release
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell getprop ro.build.version.sdk
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell getprop ro.build.fingerprint
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell getprop ro.product.model
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell getprop ro.product.manufacturer
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell getprop ro.build.date
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell getprop ro.debuggable
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell pm list packages
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell pm path com.lohan.crackme0a
+error: device not found
+[exit=255]
+
+$ timeout 10 adb shell ls -l /data/local/tmp
+error: device not found
+[exit=255]
+
+========== APK File Basic Checks ==========
+
+$ ls -l 'crackme2.apk'
+-rw-rw-r-- 1 softsec softsec 22558  6月 12  2023 crackme2.apk
+[exit=0]
+
+$ file 'crackme2.apk'
+crackme2.apk: Zip archive data, at least v2.0 to extract
+[exit=0]
+
+$ md5sum 'crackme2.apk'
+42e6acd3f69d3098b85f82b8d2ed7c6a  crackme2.apk
+[exit=0]
+
+$ sha1sum 'crackme2.apk'
+0213e198d72851e4490f6f91439a5070ddc12bc2  crackme2.apk
+[exit=0]
+
+$ sha256sum 'crackme2.apk'
+5e02565a0ade18513e95eb749c909913c8e2b92085545a33b3557c4155cea49e  crackme2.apk
+[exit=0]
+
+$ unzip -l 'crackme2.apk'
+Archive:  crackme2.apk
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+     1812  2012-01-06 16:43   res/layout/main.xml
+     1452  2012-01-06 16:43   AndroidManifest.xml
+     1744  2012-01-06 16:43   resources.arsc
+     7221  2012-01-06 16:43   res/drawable-hdpi/icon.png
+     2710  2012-01-06 16:43   res/drawable-ldpi/icon.png
+     4249  2012-01-06 16:43   res/drawable-mdpi/icon.png
+     4700  2012-01-06 16:43   classes.dex
+      564  2012-01-06 16:43   META-INF/MANIFEST.MF
+      617  2012-01-06 16:43   META-INF/CERT.SF
+     1324  2012-01-06 16:43   META-INF/CERT.RSA
+---------                     -------
+    26393                     10 files
+[exit=0]
+
+$ jar tf 'crackme2.apk'
+res/layout/main.xml
+AndroidManifest.xml
+resources.arsc
+res/drawable-hdpi/icon.png
+res/drawable-ldpi/icon.png
+res/drawable-mdpi/icon.png
+classes.dex
+META-INF/MANIFEST.MF
+META-INF/CERT.SF
+META-INF/CERT.RSA
+[exit=0]
+
+$ keytool -printcert -jarfile 'crackme2.apk'
+非法选项：  -jarfile
+尝试 keytool -help
+[exit=1]
+
+$ jarsigner -verify -verbose -certs 'crackme2.apk'
+
+sm      1812 Fri Jan 06 16:43:44 CST 2012 res/layout/main.xml
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      1452 Fri Jan 06 16:43:44 CST 2012 AndroidManifest.xml
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      1744 Fri Jan 06 16:43:44 CST 2012 resources.arsc
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      7221 Fri Jan 06 16:43:30 CST 2012 res/drawable-hdpi/icon.png
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      2710 Fri Jan 06 16:43:30 CST 2012 res/drawable-ldpi/icon.png
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      4249 Fri Jan 06 16:43:30 CST 2012 res/drawable-mdpi/icon.png
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      4700 Fri Jan 06 16:43:44 CST 2012 classes.dex
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+         564 Fri Jan 06 16:43:44 CST 2012 META-INF/MANIFEST.MF
+         617 Fri Jan 06 16:43:44 CST 2012 META-INF/CERT.SF
+        1324 Fri Jan 06 16:43:44 CST 2012 META-INF/CERT.RSA
+
+  s = 已验证签名 
+  m = 在清单中列出条目
+  k = 在密钥库中至少找到了一个证书
+  i = 在身份作用域内至少找到了一个证书
+
+jar 已验证。
+[exit=0]
+
+$ aapt dump badging 'crackme2.apk'
+package: name='com.lohan.crackme0a' versionCode='1' versionName='1.0'
+sdkVersion:'3'
+application-label:'lohan's crackme0a'
+application-icon-120:'res/drawable-ldpi/icon.png'
+application-icon-160:'res/drawable-mdpi/icon.png'
+application-icon-240:'res/drawable-hdpi/icon.png'
+application: label='lohan's crackme0a' icon='res/drawable-mdpi/icon.png'
+launchable-activity: name='com.lohan.crackme0a.Main'  label='lohan's crackme0a' icon=''
+uses-permission:'android.permission.WRITE_EXTERNAL_STORAGE'
+uses-implied-permission:'android.permission.WRITE_EXTERNAL_STORAGE','targetSdkVersion < 4'
+uses-permission:'android.permission.READ_PHONE_STATE'
+uses-implied-permission:'android.permission.READ_PHONE_STATE','targetSdkVersion < 4'
+uses-permission:'android.permission.READ_EXTERNAL_STORAGE'
+uses-implied-permission:'android.permission.READ_EXTERNAL_STORAGE','requested WRITE_EXTERNAL_STORAGE'
+uses-feature:'android.hardware.touchscreen'
+uses-implied-feature:'android.hardware.touchscreen','assumed you require a touch screen unless explicitly made optional'
+main
+supports-screens: 'normal'
+supports-any-density: 'false'
+locales: '--_--'
+densities: '120' '160' '240'
+[exit=0]
+
+========== APK ZIP Structure Via Python ==========
+apk=crackme2.apk
+exists=True size=22558
+apk_sig_block_magic_offset=-1
+01 name=res/layout/main.xml method=8 csize=631 usize=1812 crc=1b445eab offset=0
+02 name=AndroidManifest.xml method=8 csize=553 usize=1452 crc=0dcd9656 offset=700
+03 name=resources.arsc method=0 csize=1744 usize=1744 crc=7bca2641 offset=1318
+04 name=res/drawable-hdpi/icon.png method=0 csize=7221 usize=7221 crc=ad570251 offset=3108
+05 name=res/drawable-ldpi/icon.png method=0 csize=2710 usize=2710 crc=3385df91 offset=10385
+06 name=res/drawable-mdpi/icon.png method=0 csize=4249 usize=4249 crc=5994c976 offset=13154
+07 name=classes.dex method=8 csize=2464 usize=4700 crc=ff4b3723 offset=17461
+08 name=META-INF/MANIFEST.MF method=8 csize=326 usize=564 crc=64c18792 offset=19982
+09 name=META-INF/CERT.SF method=8 csize=356 usize=617 crc=89b30b66 offset=20374
+10 name=META-INF/CERT.RSA method=8 csize=1023 usize=1324 crc=332d07ce offset=20792
+duplicate_names=[]
+classes_dex_count=1
+hash entry=07 name=classes.dex size=4700 sha1_b64=b+KayiwZGZxnxSN7jCQHXdgH4PQ= sha256=1f4160c685809442cd5b179bb5f8e176f64bfdbfd9a315acc7bfd19baff4cf77
+hash entry=08 name=META-INF/MANIFEST.MF size=564 sha1_b64=7kd2B9oV5LWMeyG6ZB95Lz5bwQU= sha256=9698b3146b04e3413684cd3a416f6e54248a43d0aad781ced0b127d366eeeb1d
+hash entry=09 name=META-INF/CERT.SF size=617 sha1_b64=AD/ewqDrZxH4F+quVqnkyS0UAJ8= sha256=fbe5fd48bbae86bb67041eceeb751a9c9d0a844238d8c7c5ae59e4475fce5274
+hash entry=10 name=META-INF/CERT.RSA size=1324 sha1_b64=L8vtW0rFTgnTrRB5950xvhxYMbs= sha256=b846d5c65e96c11bce35af422d8035071900e6d7965f45eff8c3ea4519bf7cb5
+--- META-INF/MANIFEST.MF ---
+Manifest-Version: 1.0
+Created-By: 1.0 (Android)
+
+Name: res/layout/main.xml
+SHA1-Digest: c4Zbl5Hwoe9z+G1aU59kVpup7RE=
+
+Name: res/drawable-ldpi/icon.png
+SHA1-Digest: QU0CYb2mW0UBwFSloGkaFDirbdo=
+
+Name: AndroidManifest.xml
+SHA1-Digest: Nxv55t63we7uqpCZTo2qvsjo/mY=
+
+Name: res/drawable-mdpi/icon.png
+SHA1-Digest: EHSeMmmMROWZ/HJPTqC54Xh3SgA=
+
+Name: resources.arsc
+SHA1-Digest: BBSRcD9sw/UhZGQ+Yo/GtZNJxtw=
+
+Name: classes.dex
+SHA1-Digest: b+KayiwZGZxnxSN7jCQHXdgH4PQ=
+
+Name: res/drawable-hdpi/icon.png
+SHA1-Digest: CAe9ojaK9JcLzQt7JCFN9hxgBjE=
+
+softsec@softsec:~/Downloads/SoftSec/tools$ ls
+ADB  apktools  AXMLPrinter2.jar  dex2jar  jad  smali  WinRAR
+softsec@softsec:~/Downloads/SoftSec/tools$ 
+
+
+
+========== Done ==========
+2026年 06月 12日 星期五 21:40:31 CST
