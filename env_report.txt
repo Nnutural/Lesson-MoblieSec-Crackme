@@ -1,0 +1,590 @@
+
+========== Collector Info ==========
+2026年 06月 12日 星期五 21:20:37 CST
+script=env.sh
+apk_path=crackme2.apk
+deep_scan=0
+
+========== OS And Shell ==========
+
+$ uname -a
+Linux softsec 3.2.0-41-generic #66-Ubuntu SMP Thu Apr 25 03:27:11 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+[exit=0]
+
+$ cat /etc/issue 2>/dev/null
+Ubuntu 12.04.2 LTS \n \l
+
+[exit=0]
+
+$ cat /etc/lsb-release 2>/dev/null
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=12.04
+DISTRIB_CODENAME=precise
+DISTRIB_DESCRIPTION="Ubuntu 12.04.2 LTS"
+[exit=0]
+
+$ cat /etc/os-release 2>/dev/null
+NAME="Ubuntu"
+VERSION="12.04.2 LTS, Precise Pangolin"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu precise (12.04.2 LTS)"
+VERSION_ID="12.04"
+[exit=0]
+
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 12.04.2 LTS
+Release:	12.04
+Codename:	precise
+[exit=0]
+
+$ id
+uid=1000(softsec) gid=1000(softsec) 组=1000(softsec),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),107(lpadmin),110(nopasswdlogin),115(sambashare)
+[exit=0]
+
+$ pwd
+/home/softsec/Desktop/1
+[exit=0]
+
+$ echo SHELL=$SHELL
+SHELL=/bin/bash
+[exit=0]
+
+$ echo USER=$USER
+USER=softsec
+[exit=0]
+
+$ echo HOME=$HOME
+HOME=/home/softsec
+[exit=0]
+
+$ echo LANG=$LANG
+LANG=zh_CN.UTF-8
+[exit=0]
+
+$ echo LC_ALL=$LC_ALL
+LC_ALL=
+[exit=0]
+
+$ echo PATH=$PATH
+PATH=/usr/share/adt-bundle/sdk/tools:/usr/share/adt-bundle/sdk/platform-tools:/opt/python3.10/bin:/usr/lib/libfm:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/share/adt-bundle/sdk/tools:/usr/share/adt-bundle/sdk/platform-tools:/usr/share/adt-bundle/sdk/tools/proguard/bin:/usr/share/adt-bundle/eclipse:/usr/share/android-ndk/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/java/jdk1.6.0_45/bin:/usr/lib/java/jdk1.6.0_45/jre/bin:/usr/share/android-ndk
+[exit=0]
+
+$ umask
+0002
+[exit=0]
+
+========== CPU And Memory ==========
+
+$ arch
+x86_64
+[exit=0]
+
+$ getconf LONG_BIT
+64
+[exit=0]
+
+$ grep -E 'model name|Hardware|Processor' /proc/cpuinfo | head -20
+model name	: 13th Gen Intel(R) Core(TM) i9-13980HX
+[exit=0]
+
+$ free -m
+             total       used       free     shared    buffers     cached
+Mem:          1996        706       1290          0         59        390
+-/+ buffers/cache:        256       1739
+Swap:         2020          0       2020
+[exit=0]
+
+$ df -h
+文件系统        容量  已用  可用 已用% 挂载点
+/dev/sda1        39G   12G   25G   32% /
+udev            987M  4.0K  987M    1% /dev
+tmpfs           400M  784K  399M    1% /run
+none            5.0M     0  5.0M    0% /run/lock
+none            999M     0  999M    0% /run/shm
+[exit=0]
+
+========== Core Tools ==========
+
+-- sh --
+/bin/sh
+/bin/sh
+sh: /bin/sh.distrib /bin/sh /usr/share/man/man1/sh.1.gz
+
+-- bash --
+/bin/bash
+/bin/bash
+bash: /bin/bash /etc/bash.bashrc /usr/share/man/man1/bash.1.gz
+
+-- dash --
+/bin/dash
+/bin/dash
+dash: /bin/dash /usr/share/man/man1/dash.1.gz
+
+-- zsh --
+zsh:
+
+-- perl --
+/usr/bin/perl
+/usr/bin/perl
+perl: /usr/bin/perl /etc/perl /usr/lib/perl /usr/bin/X11/perl /usr/share/perl /usr/share/man/man1/perl.1.gz
+
+-- python --
+/usr/bin/python
+/usr/bin/python
+python: /usr/bin/python2.7 /usr/bin/python2.7-config /usr/bin/python3.2 /usr/bin/python /usr/bin/python3.2mu /etc/python2.7 /etc/python3.2 /etc/python /usr/lib/python2.7 /usr/lib/python3.2 /usr/bin/X11/python2.7 /usr/bin/X11/python2.7-config /usr/bin/X11/python3.2 /usr/bin/X11/python /usr/bin/X11/python3.2mu /usr/local/lib/python2.7 /usr/local/lib/python3.2 /usr/include/python2.7 /usr/include/python3.2mu /usr/share/python /opt/python3.6/bin/python3.6m /opt/python3.6/bin/python3.6m-config /opt/python3.6/bin/python3.6 /opt/python3.10/bin/python3.10-config /opt/python3.10/bin/python3.10 /usr/share/man/man1/python.1.gz
+
+-- python2 --
+/usr/bin/python2
+/usr/bin/python2
+python2: /usr/bin/python2.7 /usr/bin/python2.7-config /usr/bin/python2 /etc/python2.7 /usr/lib/python2.7 /usr/bin/X11/python2.7 /usr/bin/X11/python2.7-config /usr/bin/X11/python2 /usr/local/lib/python2.7 /usr/include/python2.7 /usr/share/man/man1/python2.1.gz
+
+-- python2.7 --
+/usr/bin/python2.7
+/usr/bin/python2.7
+python2: /usr/bin/python2.7 /usr/bin/python2.7-config /usr/bin/python2 /etc/python2.7 /usr/lib/python2.7 /usr/bin/X11/python2.7 /usr/bin/X11/python2.7-config /usr/bin/X11/python2 /usr/local/lib/python2.7 /usr/include/python2.7 /usr/share/man/man1/python2.1.gz
+
+-- python3 --
+/usr/bin/python3
+/usr/bin/python3
+python3: /usr/bin/python3 /usr/bin/python3.2 /usr/bin/python3.2mu /etc/python3 /etc/python3.2 /usr/lib/python3 /usr/lib/python3.2 /usr/bin/X11/python3 /usr/bin/X11/python3.2 /usr/bin/X11/python3.2mu /usr/local/lib/python3.2 /usr/include/python3.2mu /usr/share/python3 /opt/python3.6/bin/python3.6m /opt/python3.6/bin/python3.6m-config /opt/python3.6/bin/python3.6 /opt/python3.10/bin/python3.10-config /opt/python3.10/bin/python3.10 /usr/share/man/man1/python3.1.gz
+
+-- ruby --
+ruby:
+
+-- gcc --
+/usr/bin/gcc
+/usr/bin/gcc
+gcc: /usr/bin/gcc /usr/lib/gcc /usr/bin/X11/gcc /usr/share/man/man1/gcc.1.gz
+
+-- g++ --
+/usr/bin/g++
+/usr/bin/g++
+g++: /usr/bin/g++ /usr/bin/X11/g++ /usr/share/man/man1/g++.1.gz
+
+-- make --
+/usr/bin/make
+/usr/bin/make
+make: /usr/bin/make /usr/bin/X11/make /usr/share/man/man1/make.1.gz
+
+-- file --
+/usr/bin/file
+/usr/bin/file
+file: /usr/bin/file /usr/bin/X11/file /usr/share/file /usr/share/man/man1/file.1.gz
+
+-- strings --
+/usr/bin/strings
+/usr/bin/strings
+strings: /usr/bin/strings /usr/bin/X11/strings /usr/include/strings.h /usr/share/man/man1/strings.1.gz
+
+-- hexdump --
+/usr/bin/hexdump
+/usr/bin/hexdump
+hexdump: /usr/bin/hexdump /usr/bin/X11/hexdump /usr/share/man/man1/hexdump.1.gz
+
+-- xxd --
+/usr/bin/xxd
+/usr/bin/xxd
+xxd: /usr/bin/xxd /usr/bin/X11/xxd /usr/share/man/man1/xxd.1.gz
+
+-- md5sum --
+/usr/bin/md5sum
+/usr/bin/md5sum
+md5sum: /usr/bin/md5sum.textutils /usr/bin/md5sum /usr/bin/X11/md5sum.textutils /usr/bin/X11/md5sum /usr/share/man/man1/md5sum.1.gz
+
+-- sha1sum --
+/usr/bin/sha1sum
+/usr/bin/sha1sum
+sha1sum: /usr/bin/sha1sum /usr/bin/X11/sha1sum /usr/share/man/man1/sha1sum.1.gz
+
+-- sha256sum --
+/usr/bin/sha256sum
+/usr/bin/sha256sum
+sha256sum: /usr/bin/sha256sum /usr/bin/X11/sha256sum /usr/share/man/man1/sha256sum.1.gz
+
+-- openssl --
+/usr/bin/openssl
+/usr/bin/openssl
+openssl: /usr/bin/openssl /usr/bin/X11/openssl /usr/include/openssl /opt/openssl-1.1.1w/bin/openssl /usr/share/man/man1/openssl.1ssl.gz
+
+-- zip --
+/usr/bin/zip
+/usr/bin/zip
+zip: /usr/bin/zip /usr/bin/X11/zip /usr/share/man/man1/zip.1.gz
+
+-- unzip --
+/usr/bin/unzip
+/usr/bin/unzip
+unzip: /usr/bin/unzip /usr/bin/X11/unzip /usr/share/man/man1/unzip.1.gz
+
+-- jar --
+/usr/bin/jar
+/usr/bin/jar
+jar: /usr/bin/jar /usr/bin/X11/jar /usr/share/man/man1/jar.1.gz
+
+-- 7z --
+/usr/bin/7z
+/usr/bin/7z
+7z: /usr/bin/7z /usr/bin/X11/7z /usr/share/man/man1/7z.1.gz
+
+$ python --version
+Python 2.7.3
+[exit=0]
+
+$ python2 --version
+Python 2.7.3
+[exit=0]
+
+$ python2.7 --version
+Python 2.7.3
+[exit=0]
+
+$ python3 --version
+Python 3.2.3
+[exit=0]
+
+$ zip -v | head -20
+Copyright (c) 1990-2008 Info-ZIP - Type 'zip "-L"' for software license.
+This is Zip 3.0 (July 5th 2008), by Info-ZIP.
+Currently maintained by E. Gordon.  Please send bug reports to
+the authors using the web page at www.info-zip.org; see README for details.
+
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip,
+as of above date; see http://www.info-zip.org/ for other sites.
+
+Compiled with gcc 4.6.1 for Unix (Linux ELF) on Jun 11 2011.
+
+Zip special compilation options:
+	USE_EF_UT_TIME       (store Universal Time)
+	BZIP2_SUPPORT        (bzip2 library version 1.0.6, 6-Sept-2010)
+	    bzip2 code and library copyright (c) Julian R Seward
+	    (See the bzip2 license for terms of use)
+	SYMLINK_SUPPORT      (symbolic links supported)
+	LARGE_FILE_SUPPORT   (can read and write large files on file system)
+	ZIP64_SUPPORT        (use Zip64 to store large files in archives)
+	UNICODE_SUPPORT      (store and read UTF-8 Unicode paths)
+	STORE_UNIX_UIDs_GIDs (store UID/GID sizes/values using new extra field)
+[exit=0]
+
+$ unzip -v | head -20
+UnZip 6.00 of 20 April 2009, by Debian. Original by Info-ZIP.
+
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip/ ;
+see ftp://ftp.info-zip.org/pub/infozip/UnZip.html for other sites.
+
+Compiled with gcc 4.5.2 for Unix (Linux ELF) on Jan 28 2011.
+
+UnZip special compilation options:
+        ACORN_FTYPE_NFS
+        COPYRIGHT_CLEAN (PKZIP 0.9x unreducing method not supported)
+        SET_DIR_ATTRIB
+        SYMLINKS (symbolic links supported, if RTL and file system permit)
+        TIMESTAMP
+        UNIXBACKUP
+        USE_EF_UT_TIME
+        USE_UNSHRINK (PKZIP/Zip 1.x unshrinking method supported)
+        USE_DEFLATE64 (PKZIP 4.x Deflate64(tm) supported)
+        UNICODE_SUPPORT [wide-chars, char coding: UTF-8] (handle UTF-8 paths)
+        LARGE_FILE_SUPPORT (large files over 2 GiB supported)
+        ZIP64_SUPPORT (archives using Zip64 for large files supported)
+[exit=0]
+
+$ file --version
+file-5.09
+magic file from /etc/magic:/usr/share/misc/magic
+[exit=1]
+
+$ openssl version -a
+OpenSSL 1.0.1 14 Mar 2012
+built on: Tue Feb 23 02:09:05 UTC 2021
+platform: debian-amd64
+options:  bn(64,64) rc4(16x,int) des(idx,cisc,16,int) blowfish(idx) 
+compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN -DTERMIO -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -Wl,-Bsymbolic-functions -Wl,-z,relro -Wa,--noexecstack -Wall -DOPENSSL_NO_TLS1_2_CLIENT -DMD32_REG_T=int -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM
+OPENSSLDIR: "/usr/lib/ssl"
+[exit=0]
+
+========== Java Toolchain ==========
+
+-- java --
+/usr/bin/java
+/usr/bin/java
+java: /usr/bin/java /usr/lib/java /usr/bin/X11/java /usr/share/java
+
+-- javac --
+/usr/bin/javac
+/usr/bin/javac
+javac: /usr/bin/javac /usr/bin/X11/javac
+
+-- jar --
+/usr/bin/jar
+/usr/bin/jar
+jar: /usr/bin/jar /usr/bin/X11/jar /usr/share/man/man1/jar.1.gz
+
+-- jarsigner --
+/usr/lib/java/jdk1.6.0_45/bin/jarsigner
+/usr/lib/java/jdk1.6.0_45/bin/jarsigner
+jarsigner:
+
+-- keytool --
+/usr/bin/keytool
+/usr/bin/keytool
+keytool: /usr/bin/keytool /usr/bin/X11/keytool /usr/share/man/man1/keytool.1.gz
+
+-- jdb --
+/usr/lib/java/jdk1.6.0_45/bin/jdb
+/usr/lib/java/jdk1.6.0_45/bin/jdb
+jdb:
+
+$ java -version
+java version "1.6.0_45"
+Java(TM) SE Runtime Environment (build 1.6.0_45-b06)
+Java HotSpot(TM) 64-Bit Server VM (build 20.45-b01, mixed mode)
+[exit=0]
+
+$ javac -version
+javac 1.6.0_45
+[exit=0]
+
+$ jar 2>&1 | head -20
+Try `jar --help' for more information.
+[exit=0]
+
+$ jarsigner 2>&1 | head -30
+用法：jarsigner [选项] jar 文件别名
+       jarsigner -verify [选项] jar 文件
+
+[-keystore <url>]           密钥库位置
+
+[-storepass <口令>]         用于密钥库完整性的口令
+
+[-storetype <类型>]         密钥库类型
+
+[-keypass <口令>]           专用密钥的口令（如果不同）
+
+[-sigfile <文件>]           .SF/.DSA 文件的名称
+
+[-signedjar <文件>]         已签名的 JAR 文件的名称
+
+[-digestalg <算法>]    摘要算法的名称
+
+[-sigalg <算法>]       签名算法的名称
+
+[-verify]                   验证已签名的 JAR 文件
+
+[-verbose]                  签名/验证时输出详细信息
+
+[-certs]                    输出详细信息和验证时显示证书
+
+[-tsa <url>]                时间戳机构的位置
+
+[-tsacert <别名>]           时间戳机构的公共密钥证书
+
+[-altsigner <类>]           替代的签名机制的类名
+[exit=0]
+
+$ keytool 2>&1 | head -30
+keytool 用法：
+
+-certreq     [-v] [-protected]
+	     [-alias <别名>] [-sigalg <sigalg>]
+	     [-file <csr_file>] [-keypass <密钥库口令>]
+	     [-keystore <密钥库>] [-storepass <存储库口令>]
+	     [-storetype <存储类型>] [-providername <名称>]
+	     [-providerclass <提供方类名称> [-providerarg <参数>]] ...
+	     [-providerpath <路径列表>]
+
+-changealias [-v] [-protected] -alias <别名> -destalias <目标别名>
+	     [-keypass <密钥库口令>]
+	     [-keystore <密钥库>] [-storepass <存储库口令>]
+	     [-storetype <存储类型>] [-providername <名称>]
+	     [-providerclass <提供方类名称> [-providerarg <参数>]] ...
+	     [-providerpath <路径列表>]
+
+-delete      [-v] [-protected] -alias <别名>
+	     [-keystore <密钥库>] [-storepass <存储库口令>]
+	     [-storetype <存储类型>] [-providername <名称>]
+	     [-providerclass <提供方类名称> [-providerarg <参数>]] ...
+	     [-providerpath <路径列表>]
+
+-exportcert  [-v] [-rfc] [-protected]
+	     [-alias <别名>] [-file <认证文件>]
+	     [-keystore <密钥库>] [-storepass <存储库口令>]
+	     [-storetype <存储类型>] [-providername <名称>]
+	     [-providerclass <提供方类名称> [-providerarg <参数>]] ...
+	     [-providerpath <路径列表>]
+
+[exit=0]
+
+$ readlink -f $(command -v java 2>/dev/null) 2>/dev/null
+/usr/lib/java/jdk1.6.0_45/bin/java
+[exit=0]
+
+$ readlink -f $(command -v javac 2>/dev/null) 2>/dev/null
+/usr/lib/java/jdk1.6.0_45/bin/javac
+[exit=0]
+
+$ update-alternatives --display java
+java - 手动模式
+ 链接目前指向 /usr/lib/java/jdk1.6.0_45/bin/java
+/usr/lib/java/jdk1.6.0_45/bin/java - 优先级 300
+/usr/lib/jvm/java-6-openjdk-amd64/jre/bin/java - 优先级 1061
+  slave java.1.gz：/usr/lib/jvm/java-6-openjdk-amd64/jre/man/man1/java.1.gz
+/usr/lib/jvm/java-7-openjdk-i386/jre/bin/java - 优先级 1050
+  slave java.1.gz：/usr/lib/jvm/java-7-openjdk-i386/jre/man/man1/java.1.gz
+目前“最佳”的版本为 /usr/lib/jvm/java-6-openjdk-amd64/jre/bin/java。
+[exit=0]
+
+$ update-alternatives --display javac
+javac - 自动模式
+ 链接目前指向 /usr/lib/java/jdk1.6.0_45/bin/javac
+/usr/lib/java/jdk1.6.0_45/bin/javac - 优先级 300
+目前“最佳”的版本为 /usr/lib/java/jdk1.6.0_45/bin/javac。
+[exit=0]
+
+========== Android Environment Variables ==========
+
+$ echo ANDROID_HOME=$ANDROID_HOME
+ANDROID_HOME=
+[exit=0]
+
+$ echo ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT
+ANDROID_SDK_ROOT=
+[exit=0]
+
+$ echo ANDROID_SDK_HOME=$ANDROID_SDK_HOME
+ANDROID_SDK_HOME=
+[exit=0]
+
+$ echo ANDROID_NDK_HOME=$ANDROID_NDK_HOME
+ANDROID_NDK_HOME=
+[exit=0]
+
+$ echo JAVA_HOME=$JAVA_HOME
+JAVA_HOME=
+[exit=0]
+
+$ echo CLASSPATH=$CLASSPATH
+CLASSPATH=/usr/lib/java/jdk1.6.0_45/lib:/usr/lib/java/jdk1.6.0_45/jre/lib
+[exit=0]
+
+========== Android Tool Locations ==========
+
+-- adb --
+/usr/share/adt-bundle/sdk/platform-tools/adb
+/usr/share/adt-bundle/sdk/platform-tools/adb
+adb: /usr/bin/adb /usr/bin/X11/adb
+
+-- fastboot --
+/usr/share/adt-bundle/sdk/platform-tools/fastboot
+/usr/share/adt-bundle/sdk/platform-tools/fastboot
+fastboot: /usr/bin/fastboot /usr/bin/X11/fastboot
+
+-- emulator --
+/usr/share/adt-bundle/sdk/tools/emulator
+/usr/share/adt-bundle/sdk/tools/emulator
+emulator:
+
+-- android --
+/usr/share/adt-bundle/sdk/tools/android
+/usr/share/adt-bundle/sdk/tools/android
+android:
+
+-- apktool --
+/usr/bin/apktool
+/usr/bin/apktool
+apktool: /usr/bin/apktool /usr/bin/X11/apktool /usr/share/apktool
+
+-- aapt --
+/usr/share/adt-bundle/sdk/platform-tools/aapt
+/usr/share/adt-bundle/sdk/platform-tools/aapt
+aapt:
+
+-- aapt2 --
+aapt2:
+
+-- dx --
+/usr/share/adt-bundle/sdk/platform-tools/dx
+/usr/share/adt-bundle/sdk/platform-tools/dx
+dx:
+
+-- d8 --
+d8:
+
+-- dexdump --
+/usr/share/adt-bundle/sdk/platform-tools/dexdump
+/usr/share/adt-bundle/sdk/platform-tools/dexdump
+dexdump:
+
+-- zipalign --
+/usr/share/adt-bundle/sdk/tools/zipalign
+/usr/share/adt-bundle/sdk/tools/zipalign
+zipalign:
+
+-- apksigner --
+apksigner:
+
+-- aidl --
+/usr/share/adt-bundle/sdk/platform-tools/aidl
+/usr/share/adt-bundle/sdk/platform-tools/aidl
+aidl:
+
+-- sqlite3 --
+/usr/share/adt-bundle/sdk/tools/sqlite3
+/usr/share/adt-bundle/sdk/tools/sqlite3
+sqlite3: /usr/bin/sqlite3 /usr/bin/X11/sqlite3 /usr/include/sqlite3.h /usr/share/man/man1/sqlite3.1.gz
+
+-- smali --
+/usr/bin/smali
+/usr/bin/smali
+smali: /usr/bin/smali /usr/bin/X11/smali /usr/share/smali
+
+-- baksmali --
+/usr/bin/baksmali
+/usr/bin/baksmali
+baksmali: /usr/bin/baksmali /usr/bin/X11/baksmali
+
+-- dex2jar --
+/usr/bin/dex2jar
+/usr/bin/dex2jar
+dex2jar: /usr/bin/dex2jar /usr/bin/X11/dex2jar /usr/share/dex2jar
+
+-- d2j-dex2jar --
+/usr/bin/d2j-dex2jar
+/usr/bin/d2j-dex2jar
+d2j-dex2jar: /usr/bin/d2j-dex2jar /usr/bin/X11/d2j-dex2jar
+
+-- jadx --
+jadx:
+
+-- jadx-gui --
+jadx-gui:
+
+========== Android Tool Versions ==========
+
+$ adb version
+Android Debug Bridge version 1.0.31
+[exit=0]
+
+$ fastboot --version
+fastboot: unrecognized option '--version'
+[exit=1]
+
+$ emulator -version
+Android emulator version 21.1.0 (build_id OPENMASTER-569685)
+Copyright (C) 2006-2011 The Android Open Source Project and many others.
+This program is a derivative of the QEMU CPU emulator (www.qemu.org).
+
+  This software is licensed under the terms of the GNU General Public
+  License version 2, as published by the Free Software Foundation, and
+  may be copied, distributed, and modified under those terms.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+[exit=0]
+
+$ android list sdk 2>/dev/null | head -40
