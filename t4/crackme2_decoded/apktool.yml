@@ -1,0 +1,12 @@
+version: 1.5.2
+apkFileName: crackme2.apk
+isFrameworkApk: false
+usesFramework:
+  ids:
+  - 1
+sdkInfo:
+  minSdkVersion: '3'
+packageInfo:
+  cur_package: com.lohan.crackme0a
+  orig_package: com.lohan.crackme0a
+compressionType: false

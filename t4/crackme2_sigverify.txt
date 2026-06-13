@@ -1,0 +1,46 @@
+
+sm      1812 Fri Jan 06 16:43:44 CST 2012 res/layout/main.xml
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      1452 Fri Jan 06 16:43:44 CST 2012 AndroidManifest.xml
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      1744 Fri Jan 06 16:43:44 CST 2012 resources.arsc
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      7221 Fri Jan 06 16:43:30 CST 2012 res/drawable-hdpi/icon.png
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      2710 Fri Jan 06 16:43:30 CST 2012 res/drawable-ldpi/icon.png
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      4249 Fri Jan 06 16:43:30 CST 2012 res/drawable-mdpi/icon.png
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+sm      4700 Fri Jan 06 16:43:44 CST 2012 classes.dex
+
+      X.509, CN="lohan+", OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+      [证书的有效期为 10-8-23 上午12:40 至 38-1-8 上午12:40]
+
+         564 Fri Jan 06 16:43:44 CST 2012 META-INF/MANIFEST.MF
+         617 Fri Jan 06 16:43:44 CST 2012 META-INF/CERT.SF
+        1324 Fri Jan 06 16:43:44 CST 2012 META-INF/CERT.RSA
+
+  s = 已验证签名 
+  m = 在清单中列出条目
+  k = 在密钥库中至少找到了一个证书
+  i = 在身份作用域内至少找到了一个证书
+
+jar 已验证。

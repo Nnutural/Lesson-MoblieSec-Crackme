@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public type="drawable" name="icon" id="0x7f020000" />
+    <public type="layout" name="main" id="0x7f030000" />
+    <public type="string" name="app_name" id="0x7f040000" />
+    <public type="string" name="txt_enter_code" id="0x7f040001" />
+    <public type="string" name="btn_validate" id="0x7f040002" />
+    <public type="id" name="RelativeLayout1" id="0x7f050000" />
+    <public type="id" name="TextView01" id="0x7f050001" />
+    <public type="id" name="tv_reg_text" id="0x7f050002" />
+    <public type="id" name="edt_code" id="0x7f050003" />
+    <public type="id" name="btn_validate" id="0x7f050004" />
+</resources>

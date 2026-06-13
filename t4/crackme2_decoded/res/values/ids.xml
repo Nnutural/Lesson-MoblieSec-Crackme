@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="RelativeLayout1">false</item>
+    <item type="id" name="TextView01">false</item>
+    <item type="id" name="tv_reg_text">false</item>
+    <item type="id" name="edt_code">false</item>
+    <item type="id" name="btn_validate">false</item>
+</resources>

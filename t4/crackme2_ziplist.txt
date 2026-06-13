@@ -1,0 +1,15 @@
+Archive:  crackme2.apk
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+     1812  2012-01-06 16:43   res/layout/main.xml
+     1452  2012-01-06 16:43   AndroidManifest.xml
+     1744  2012-01-06 16:43   resources.arsc
+     7221  2012-01-06 16:43   res/drawable-hdpi/icon.png
+     2710  2012-01-06 16:43   res/drawable-ldpi/icon.png
+     4249  2012-01-06 16:43   res/drawable-mdpi/icon.png
+     4700  2012-01-06 16:43   classes.dex
+      564  2012-01-06 16:43   META-INF/MANIFEST.MF
+      617  2012-01-06 16:43   META-INF/CERT.SF
+     1324  2012-01-06 16:43   META-INF/CERT.RSA
+---------                     -------
+    26393                     10 files
