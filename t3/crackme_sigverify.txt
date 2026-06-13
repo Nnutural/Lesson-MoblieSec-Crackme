@@ -1,0 +1,51 @@
+
+         610 Wed Jan 04 23:43:50 CST 2012 META-INF/MANIFEST.MF
+         663 Wed Jan 04 23:43:50 CST 2012 META-INF/CERT.SF
+        1714 Wed Jan 04 23:43:50 CST 2012 META-INF/CERT.RSA
+sm      2816 Wed Jan 04 23:43:50 CST 2012 AndroidManifest.xml
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm      2782 Wed Jan 04 23:43:16 CST 2012 res/drawable/icon.png
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm      7768 Sun Jan 01 18:21:44 CST 2012 assets/unlock.png
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm      2840 Sun Jan 01 01:05:18 CST 2012 assets/keys64.png
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm       642 Wed Jan 04 23:43:50 CST 2012 assets/1.bal
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm     10361 Sun Jan 01 18:21:50 CST 2012 assets/lock.png
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm       600 Wed Jan 04 23:43:16 CST 2012 resources.arsc
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+sm    294364 Wed Jan 04 23:43:50 CST 2012 classes.dex
+
+      X.509, EMAILADDRESS=android@android.com, CN=Android, OU=Android, O=Android, L=Mountain View, ST=California, C=US
+      [证书的有效期为 08-2-29 上午9:33 至 35-7-17 上午9:33]
+
+
+  s = 已验证签名 
+  m = 在清单中列出条目
+  k = 在密钥库中至少找到了一个证书
+  i = 在身份作用域内至少找到了一个证书
+
+jar 已验证。

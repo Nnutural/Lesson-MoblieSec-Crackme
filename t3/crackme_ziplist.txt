@@ -1,0 +1,16 @@
+Archive:  crackme.apk
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+      610  2012-01-04 23:43   META-INF/MANIFEST.MF
+      663  2012-01-04 23:43   META-INF/CERT.SF
+     1714  2012-01-04 23:43   META-INF/CERT.RSA
+     2816  2012-01-04 23:43   AndroidManifest.xml
+     2782  2012-01-04 23:43   res/drawable/icon.png
+     7768  2012-01-01 18:21   assets/unlock.png
+     2840  2012-01-01 01:05   assets/keys64.png
+      642  2012-01-04 23:43   assets/1.bal
+    10361  2012-01-01 18:21   assets/lock.png
+      600  2012-01-04 23:43   resources.arsc
+   294364  2012-01-04 23:43   classes.dex
+---------                     -------
+   325160                     11 files
