@@ -185,10 +185,41 @@ grep -n "Register\\|Activate\\|check_code\\|write2file\\|Input Your Code" \
 2. `Activity_Create` 中调用 `_check_code()Z`，返回 true 时设置 `unlock.png` 并提示 `Registerd successfully...`；返回 false 时设置 `lock.png` 并添加 `Activate` 菜单。
 3. `_activate_click()` 是注册菜单入口。原逻辑为：弹出输入框 → 空输入直接返回 → 非数字直接返回 → 长度不是 11 直接返回 → 通过后调用 `_encrypt()` 写入 `key.txt`。
 4. `_check_code()` 是最终校验点。原逻辑为：`_readfile()` 读取内部目录的 `key.txt`；为空返回 false；非空时解密并拆分注册码，与 IMEI/MAC 计算出的片段逐段比较，全部匹配才返回 true。
+5. 实机验证时如果出现 `Challenge #1 / WI-FI MAC Address required!`，说明程序还在 `_activity_create()` 的前置环境检查处退出，尚未进入注册校验逻辑。该检查通过 `ABLoadWifi()` 和 `MacAddress` 判断 Wi-Fi/MAC，再通过 IMEI 字符求和判断模拟器环境。
 
-修改原则：尽量小改控制流，不改资源、不改 `apktool.yml`、不重写算法。保留“首次安装未注册 → 点击 Activate → 输入 → 提示重启 → 重启后注册成功”的实验流程，只让任意非空输入都能通过。
+修改原则：尽量小改控制流，不改资源、不改 `apktool.yml`、不重写算法。保留“首次安装未注册 → 点击 Activate → 输入 → 提示重启 → 重启后注册成功”的实验流程；同时给模拟器补固定的 MAC/IMEI 值，避免前置环境检查提前结束 Activity。
 
-#### 修改点 1：让任意非空输入直接写入 key.txt
+#### 修改点 1：绕过启动阶段的 MAC / IMEI 环境检查
+
+位置：`main.smali` 的 `_activity_create()`。
+
+在 `ABLoadWifi()` 后直接设置固定 MAC，并跳到原本的正常分支 `:cond_1`，避免 `Challenge #1`：
+
+```smali
+invoke-virtual {v0, v1}, Lcom/AB/ABWifi/ABWifi;->ABLoadWifi(Lanywheresoftware/b4a/BA;)Z
+
+move-result v0
+
+const-string v0, "00:11:22:33:44:55"
+
+sput-object v0, LCom/zAWS/KeygenMe/main;->_mac_address:Ljava/lang/String;
+
+goto :cond_1
+```
+
+在 `GetDeviceId()` 后直接设置固定非零 IMEI，避免模拟器默认全 0 设备号触发 `Challenge #2`：
+
+```smali
+invoke-static {}, Lanywheresoftware/b4a/phone/Phone$PhoneId;->GetDeviceId()Ljava/lang/String;
+
+move-result-object v0
+
+const-string v0, "123456789012345"
+
+sput-object v0, LCom/zAWS/KeygenMe/main;->_imei:Ljava/lang/String;
+```
+
+#### 修改点 2：让任意非空输入直接写入 key.txt
 
 位置：`main.smali` 的 `_activate_click()`，在 `:cond_0` 处。这里是“输入不为空”后进入的分支。原本后面还会继续检查是否为数字、长度是否为 11。
 
@@ -212,7 +243,7 @@ invoke-static {v0}, Lanywheresoftware/b4a/keywords/Common;->IsNumber(Ljava/lang/
 
 含义：`v0` 是输入框返回的字符串。只要它不是空字符串，就直接调用已有的 `_write2file()` 写入 `key.txt`，然后跳到原来的 `:cond_3`，复用原程序的隐藏键盘、关闭菜单、弹出 `Please Restart...`、结束 Activity 这段流程。
 
-#### 修改点 2：让非空 key.txt 直接判定为已注册
+#### 修改点 3：让非空 key.txt 直接判定为已注册
 
 位置：`main.smali` 的 `_check_code()`，在 `:cond_0` 处。这里是 `_readfile()` 读到的内容不为空后进入的分支。
 
@@ -245,6 +276,7 @@ invoke-static {v0}, LCom/zAWS/KeygenMe/main;->_decrypt(Ljava/lang/String;)Ljava/
 截图对比建议：
 
 ```bash
+nl -ba crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali | sed -n '690,770p'
 nl -ba crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali | sed -n '400,500p'
 nl -ba crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali | sed -n '1720,1755p'
 ```

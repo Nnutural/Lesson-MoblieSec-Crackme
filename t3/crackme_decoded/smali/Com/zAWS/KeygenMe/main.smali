@@ -694,6 +694,12 @@
 
     move-result v0
 
+    const-string v0, "00:11:22:33:44:55"
+
+    sput-object v0, LCom/zAWS/KeygenMe/main;->_mac_address:Ljava/lang/String;
+
+    goto :cond_1
+
     .line 315
     if-ne v0, v9, :cond_0
 
@@ -756,6 +762,8 @@
     invoke-static {}, Lanywheresoftware/b4a/phone/Phone$PhoneId;->GetDeviceId()Ljava/lang/String;
 
     move-result-object v0
+
+    const-string v0, "123456789012345"
 
     sput-object v0, LCom/zAWS/KeygenMe/main;->_imei:Ljava/lang/String;
 
