@@ -289,6 +289,51 @@ ADB uninstall Com.zAWS.KeygenMe 2>/dev/null
 
 改完后**别动 apktool.yml**，继续执行 3.5 重打包。
 
+#### 可选：构建“原始注册逻辑对照包”
+
+完全原始的 `crackme.apk` 在模拟器上会先触发 `Challenge #1/#2` 并退出，无法进入注册界面做密码对比。为了截图验证“错误码失败 / 正确码成功”，可以使用一份对照解包目录：
+
+```bash
+crackme_envonly_decoded/
+```
+
+这份目录只保留 3.4 的 MAC/IMEI 环境补丁，撤销 `_activate_click()` 和 `_check_code()` 的注册绕过补丁，所以注册校验仍是原始逻辑。构建方式：
+
+```bash
+APKTOOL b crackme_envonly_decoded crackme_envonly_unsigned.apk
+JARSIGNER -verbose \
+  -keystore ~/keys/softsec.keystore \
+  -storepass android -keypass android \
+  -sigalg MD5withRSA -digestalg SHA1 \
+  -signedjar crackme_envonly_signed.apk \
+  crackme_envonly_unsigned.apk \
+  softsec
+ZIPALIGN -f -v 4 crackme_envonly_signed.apk crackme_envonly.apk
+```
+
+安装并进入对照包：
+
+```bash
+ADB uninstall Com.zAWS.KeygenMe 2>/dev/null
+ADB install -r crackme_envonly.apk
+ADB shell am start -n Com.zAWS.KeygenMe/.main
+```
+
+在当前固定环境值下：
+
+```text
+MAC  = 00:11:22:33:44:55
+IMEI = 123456789012345
+```
+
+原始算法对应的正确注册码是：
+
+```text
+19914427050
+```
+
+测试错误码时可输入任意 11 位数字，例如 `11111111111`；重启后应仍显示锁。测试正确码时输入 `19914427050`；重启后应显示解锁。
+
 
 
 

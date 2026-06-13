@@ -1,0 +1,12 @@
+version: 1.5.2
+apkFileName: crackme.apk
+isFrameworkApk: false
+usesFramework:
+  ids:
+  - 1
+sdkInfo:
+  minSdkVersion: '4'
+packageInfo:
+  cur_package: Com.zAWS.KeygenMe
+  orig_package: Com.zAWS.KeygenMe
+compressionType: false
