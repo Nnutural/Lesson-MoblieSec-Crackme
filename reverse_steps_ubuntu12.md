@@ -463,59 +463,193 @@ DEX2JAR -f -o crackme2-dex2jar.jar dex/classes.dex
 
 ### 4.3 写注册机（独立程序）
 
-源码分析得到的算法（用户名 / IMEI / 常量 + 哈希 / 异或 / 拼接 / 编码 ……）写成一个独立的小程序。两种推荐方式：
-
-#### 方式 A：Java（推荐——和 APK 内一致，避免编码不一致踩坑）
+本节新增文件只有一个：
 
 ```bash
-mkdir -p keygen-java && cd keygen-java
-cat > Keygen.java <<'EOF'
+t4/keygen-java/Keygen.java
+```
+
+#### 4.3.1 Java 源码与 Smali 交叉定位
+
+`dex2jar` 生成的 Java 伪源码位于：
+
+```bash
+crackme2-dex/classes_dex2jar.src.zip
+# 关键文件：com/lohan/crackme0a/Main.java
+```
+
+与之对应的 smali 文件位于：
+
+```bash
+t4/crackme2_decoded/smali/com/lohan/crackme0a/Main.smali
+```
+
+核心函数可以归纳为三组：
+
+| 函数 | Java 伪源码语义 | Smali 证据位置 | 作用 |
+| --- | --- | --- | --- |
+| `getMobileID()` | `((TelephonyManager)getSystemService("phone")).getDeviceId()` | `Main.smali` 的 `getMobileID()`，调用 `Landroid/telephony/TelephonyManager;->getDeviceId()` | 读取设备号/IMEI |
+| `generateIDHash()` | 对 `getMobileID()` 的返回值计算注册码 | `Main.smali` 的 `generateIDHash()`，出现 `MessageDigest.getInstance("MD5")`、`BigInteger(...).toString(16)` | 注册码生成算法 |
+| `validateSerial(String)` | `generateIDHash().equals(serial)` | `Main.smali` 的 `validateSerial()`，调用 `String.equals()` | 用户输入校验 |
+
+UI 事件链也很直接：`onClick()` 读取 `edt_code` 文本，调用 `validateSerial(serial)`；若返回 0，显示 `Invalid code.\nTry again.`；若返回 1，显示 `Code is valid!`，隐藏输入框和按钮，并把提示文本改为 `Code Accepted :D`。因此任务 4 不需要修改 APK，只需要复现 `generateIDHash()` 即可。
+
+#### 4.3.2 注册机制还原
+
+从 Java 伪源码和 smali 可知，`crackme2.apk` 的注册码并不依赖用户名，而是完全绑定设备号/IMEI。设设备号字符串为 `D`，算法分为四步。
+
+第一步，读取设备号：
+
+```java
+String deviceID = getMobileID();
+```
+
+第二步，对设备号原始字节计算 MD5：
+
+```java
+MessageDigest m = MessageDigest.getInstance("MD5");
+m.update(deviceID.getBytes(), 0, deviceID.length());
+byte[] digest = m.digest();
+```
+
+这里 `deviceID` 通常是十进制 IMEI 字符串，例如模拟器常见值 `000000000000000`。由于输入只包含数字，`getBytes()` 在 Android 与桌面 Java 的默认编码差异不会改变字节值。
+
+第三步，对 16 字节 MD5 摘要做相邻字节异或变换。伪代码如下：
+
+```text
+digestPos = 0
+transformPos = 0
+while digestPos < digest.length:
+    if digestPos >= digest.length - 1:
+        nextPos = 0
+    else:
+        nextPos = digestPos + 1
+    transform[transformPos] = digest[digestPos] XOR digest[nextPos]
+    digestPos += 2
+    transformPos += 1
+```
+
+由于 MD5 固定为 16 字节，实际参与计算的是 `(0,1)、(2,3)、...、(14,15)` 共 8 组；`transform` 数组长度仍为 16，后 8 字节保持 Java 默认的 `0x00`。这点在 smali 中表现为 `new-array v6, v9, [B` 后仅按 `transformPos` 写入前半部分。
+
+第四步，将变换后的 16 字节数组按正数解释为 `BigInteger`，转为小写十六进制字符串，并截取前 15 位：
+
+```java
+new BigInteger(1, transform).toString(16).substring(0, 15)
+```
+
+因此注册码可以形式化表示为：
+
+```text
+serial = first15_hex( BigInteger_positive( pairwise_xor(MD5(deviceID)) ) )
+```
+
+其中 `pairwise_xor()` 表示对 MD5 摘要的相邻字节两两异或，并将结果放入 16 字节数组前半部分。
+
+#### 4.3.3 独立注册机实现
+
+已在本项目新增：
+
+```bash
+t4/keygen-java/Keygen.java
+```
+
+源码如下：
+
+```java
+import java.math.BigInteger;
 import java.security.MessageDigest;
 
 public class Keygen {
+    public static String generate(String deviceId) throws Exception {
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        md5.update(deviceId.getBytes(), 0, deviceId.length());
+
+        byte[] digest = md5.digest();
+        byte[] transform = new byte[digest.length];
+
+        int digestPos = 0;
+        int transformPos = 0;
+        while (digestPos < digest.length) {
+            int nextPos = digestPos >= digest.length - 1 ? 0 : digestPos + 1;
+            transform[transformPos] = (byte) (digest[digestPos] ^ digest[nextPos]);
+            digestPos += 2;
+            transformPos++;
+        }
+
+        return new BigInteger(1, transform).toString(16).substring(0, 15);
+    }
+
     public static void main(String[] args) throws Exception {
-        if (args.length < 1) {
-            System.err.println("Usage: java Keygen <imei_or_username>");
+        if (args.length != 1) {
+            System.err.println("Usage: java Keygen <device_id_or_imei>");
             System.exit(1);
         }
-        String input = args[0];
 
-        // ===== 占位：替换为 GitHub 仓库源码分析得到的算法 =====
-        // 例：MessageDigest md = MessageDigest.getInstance("MD5");
-        //     byte[] h = md.digest(input.getBytes("UTF-8"));
-        //     ... 截取 / 异或 / 转大写 / 加分隔符 ...
-        // ====================================================
-
-        String serial = "<TODO>";   // 由源码分析替换
-        System.out.println(serial);
+        System.out.println(generate(args[0]));
     }
 }
-EOF
-
-javac Keygen.java
-java Keygen 123456789012345        # 输入示例
-cd ..
 ```
 
-#### 方式 B：Python（写报告时更紧凑）
-
-VM 自带 `python2.7` 和 `python3.2`，看算法用哪个更顺手即可。
+编译与运行：
 
 ```bash
-mkdir -p keygen-py && cd keygen-py
-cat > keygen.py <<'EOF'
-#!/usr/bin/env python
-import hashlib, sys
+cd /home/softsec/Desktop/1/t4
+# 进入包含 Keygen.java 的注册机源码目录
+cd keygen-java
 
-def keygen(s):
-    # ===== 占位：由 GitHub 源码分析填入 =====
-    return "<TODO>"
+javac Keygen.java
+java Keygen 000000000000000
+```
 
-if __name__ == "__main__":
-    print(keygen(sys.argv[1]))
-EOF
-python keygen.py 123456789012345
-cd ..
+在模拟器默认 IMEI 为 `000000000000000` 时，输出应为：
+
+```text
+d67bb44ac8fe21a
+```
+
+另一个测试样例：
+
+```bash
+java Keygen 123456789012345
+```
+
+输出：
+
+```text
+e19f408bc63067b
+```
+
+#### 4.3.4 修改前后区别
+
+修改前，4.3 只有占位模板，核心位置是：
+
+```java
+// ===== 占位：替换为 GitHub 仓库源码分析得到的算法 =====
+String serial = "<TODO>";
+```
+
+修改后：
+
+1. 新增 `t4/keygen-java/Keygen.java`，完整复现 APK 中 `generateIDHash()` 的 MD5、相邻字节异或、`BigInteger` 十六进制化和 15 位截取逻辑。
+2. `reverse_steps_ubuntu12.md` 的 4.3 节由占位说明改为完整源码分析、算法还原、注册机源码、编译运行命令和示例输出。
+3. APK 本体未修改，符合任务 4 “不改 APK、写独立注册机”的要求。
+
+截图建议：
+
+```bash
+cd /home/softsec/Desktop/1
+
+# Java 伪源码证据
+unzip -p crackme2-dex/classes_dex2jar.src.zip com/lohan/crackme0a/Main.java | sed -n '19,56p'
+
+# Smali 证据
+nl -ba t4/crackme2_decoded/smali/com/lohan/crackme0a/Main.smali | sed -n '20,142p'
+nl -ba t4/crackme2_decoded/smali/com/lohan/crackme0a/Main.smali | sed -n '172,212p'
+
+# 注册机运行证据
+cd t4/keygen-java
+javac Keygen.java
+java Keygen 000000000000000
 ```
 
 ### 4.4 装原始 crackme2.apk 到模拟器并取 IMEI
@@ -533,8 +667,8 @@ ADB shell am start -n com.lohan.crackme0a/com.lohan.crackme0a.Main
 
 ### 4.5 验证注册机
 
-1. 在 UI 里**抄下应用此时展示的“机器码 / 用户名”字段**（如果有的话）；如果应用直接读 IMEI 不在 UI 里露出来，那 keygen 的输入就用上一步 4.4 拿到的 IMEI。
-2. `java Keygen <那个串>` 或 `python keygen.py <那个串>` 拿到合法注册码。
+1. 本 APK 不在 UI 中展示机器码；源码显示其直接读取 `TelephonyManager.getDeviceId()`，因此 keygen 的输入使用 4.4 拿到的 IMEI。
+2. `java Keygen <IMEI>` 拿到合法注册码。
 3. 把注册码填回应用 → 截图“注册成功”。
 
 ### 4.6 取证 / 截图清单
