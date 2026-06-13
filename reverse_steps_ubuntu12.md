@@ -74,6 +74,8 @@ alias EMU='/usr/share/adt-bundle/sdk/tools/emulator'
 
 后文命令统一用这些别名，便于复制。如果走 `/usr/bin/apktool` 这种 wrapper 也行，直接 `apktool d ...` 即可。
 
+> 注意：本 VM 的 apktool 是 `1.5.2`，`d[ecode]` / `b[uild]` 的输出目标都写成最后的位置参数，不支持新版 apktool 的 `-o` 参数。误用 `-o` 时 apktool 只会打印 Usage，不会生成输出目录或 APK。
+
 ### 0.3 准备一把调试签名 keystore（仅做一次）
 
 > 如果 0.1 第 ④ 步已经显示 `~/.android/debug.keystore` 存在，跳过本节，下面 `jarsigner` 时直接用它。
@@ -99,6 +101,8 @@ keytool -list -v -keystore ~/keys/softsec.keystore -storepass android | head -20
 ## 任务 3：crackme.apk 注册逻辑绕过
 
 > 目标：通过修改 smali 让任意输入都判为合法注册，重新打包 → 签名 → 安装 → 截图验证。
+>
+> 要求（必须遵守）：使用ApkTool及Dex2jar逆向crackme.apk，寻找到爆破点，修改注册逻辑代码，使注册机制失效，使用ApkTool重新打包生成apk，要求新的apk对任意字符成功注册。（可使用工具：ApkTool、BakSmali 、dex2jar、jd-gui）
 
 ### 3.1 静态信息快照（写报告要用）
 
@@ -122,7 +126,7 @@ JARSIGNER -verify -verbose -certs crackme.apk | tee crackme_sigverify.txt
 
 ```bash
 # -f 覆盖；输出目录 crackme_decoded
-APKTOOL d -f crackme.apk -o crackme_decoded
+APKTOOL d -f crackme.apk crackme_decoded
 ls crackme_decoded
 # 关键子目录：
 #   AndroidManifest.xml   ← 已反编译成明文
@@ -177,7 +181,7 @@ ls -l crackme-dex2jar.jar
 ### 3.5 重打包
 
 ```bash
-APKTOOL b crackme_decoded -o crackme_patched_unsigned.apk
+APKTOOL b crackme_decoded crackme_patched_unsigned.apk
 ls -l crackme_patched_unsigned.apk
 ```
 
@@ -248,6 +252,8 @@ ADB shell screencap -p /sdcard/t3_ok.png && ADB pull /sdcard/t3_ok.png ./t3_ok.p
 ## 任务 4：crackme2.apk 注册机开发
 
 > 目标：**不改 APK**。逆向出注册码生成算法，写一个独立小程序（Java / Python 任意），输入用户名 / 设备号 → 输出合法注册码 → 在原始 crackme2.apk 中验证通过。
+>
+> 要求（必须遵守）：逆向示例程序crackme2.apk，根据dex2jar和JD-GUI工具，查看java源码，分析注册机制，写出注册机程序。
 
 ### 4.1 静态信息快照
 
@@ -276,7 +282,7 @@ classes.dex sha256 = 1f4160c685809442cd5b179bb5f8e176f64bfdbfd9a315acc7bfd19baff
 ### 4.2 解包（同样两条路：smali / jar）
 
 ```bash
-APKTOOL d -f crackme2.apk -o crackme2_decoded
+APKTOOL d -f crackme2.apk crackme2_decoded
 
 mkdir -p dex && cd dex
 unzip -o ../crackme2.apk classes.dex
