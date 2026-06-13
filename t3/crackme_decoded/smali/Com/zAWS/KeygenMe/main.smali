@@ -420,6 +420,10 @@
 
     .line 254
     :cond_0
+    invoke-static {v0}, LCom/zAWS/KeygenMe/main;->_write2file(Ljava/lang/String;)Ljava/lang/String;
+
+    goto :cond_3
+
     invoke-static {v0}, Lanywheresoftware/b4a/keywords/Common;->IsNumber(Ljava/lang/String;)Z
 
     move-result v1
@@ -1738,6 +1742,10 @@
 
     .line 562
     :cond_0
+    move v0, v6
+
+    goto :goto_0
+
     invoke-static {v0}, LCom/zAWS/KeygenMe/main;->_decrypt(Ljava/lang/String;)Ljava/lang/String;
 
     move-result-object v0

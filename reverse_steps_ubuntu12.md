@@ -166,17 +166,99 @@ ls -l crackme-dex2jar.jar
 
 ### 3.4 修改 smali（绕过校验）
 
-> 真正改哪一行由 GitHub 上拉取的源码分析结论决定。下面给的是 **改完后的统一规范**——保证可重打包、签名、装机。
+本次实际修改文件：
 
-在 `crackme_decoded/smali/.../` 下编辑目标方法的 `.smali` 文件。常见三种修改模式：
+```bash
+crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali
+```
 
-| 模式 | 改前 | 改后 |
-| --- | --- | --- |
-| **反转 if 条件** | `if-eqz vN, :cond_fail` | `if-nez vN, :cond_fail` |
-| **强制返回 true** | 方法末尾 `return v0`（v0=校验结果） | 把方法体清空成 `const/4 v0, 0x1` + `return v0` |
-| **跳过 toast 失败分支** | 走 `:cond_fail` 那段调用 `makeText("...错误...")` | 把那段 `goto :cond_ok` 直接绕过 |
+定位过程：
 
-改完后**别动 apktool.yml**。
+1. 先在主业务类里搜索注册相关字符串和方法：
+
+```bash
+grep -n "Register\\|Activate\\|check_code\\|write2file\\|Input Your Code" \
+  crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali
+```
+
+2. `Activity_Create` 中调用 `_check_code()Z`，返回 true 时设置 `unlock.png` 并提示 `Registerd successfully...`；返回 false 时设置 `lock.png` 并添加 `Activate` 菜单。
+3. `_activate_click()` 是注册菜单入口。原逻辑为：弹出输入框 → 空输入直接返回 → 非数字直接返回 → 长度不是 11 直接返回 → 通过后调用 `_encrypt()` 写入 `key.txt`。
+4. `_check_code()` 是最终校验点。原逻辑为：`_readfile()` 读取内部目录的 `key.txt`；为空返回 false；非空时解密并拆分注册码，与 IMEI/MAC 计算出的片段逐段比较，全部匹配才返回 true。
+
+修改原则：尽量小改控制流，不改资源、不改 `apktool.yml`、不重写算法。保留“首次安装未注册 → 点击 Activate → 输入 → 提示重启 → 重启后注册成功”的实验流程，只让任意非空输入都能通过。
+
+#### 修改点 1：让任意非空输入直接写入 key.txt
+
+位置：`main.smali` 的 `_activate_click()`，在 `:cond_0` 处。这里是“输入不为空”后进入的分支。原本后面还会继续检查是否为数字、长度是否为 11。
+
+修改前：
+
+```smali
+:cond_0
+invoke-static {v0}, Lanywheresoftware/b4a/keywords/Common;->IsNumber(Ljava/lang/String;)Z
+```
+
+修改后：
+
+```smali
+:cond_0
+invoke-static {v0}, LCom/zAWS/KeygenMe/main;->_write2file(Ljava/lang/String;)Ljava/lang/String;
+
+goto :cond_3
+
+invoke-static {v0}, Lanywheresoftware/b4a/keywords/Common;->IsNumber(Ljava/lang/String;)Z
+```
+
+含义：`v0` 是输入框返回的字符串。只要它不是空字符串，就直接调用已有的 `_write2file()` 写入 `key.txt`，然后跳到原来的 `:cond_3`，复用原程序的隐藏键盘、关闭菜单、弹出 `Please Restart...`、结束 Activity 这段流程。
+
+#### 修改点 2：让非空 key.txt 直接判定为已注册
+
+位置：`main.smali` 的 `_check_code()`，在 `:cond_0` 处。这里是 `_readfile()` 读到的内容不为空后进入的分支。
+
+修改前：
+
+```smali
+:cond_0
+invoke-static {v0}, LCom/zAWS/KeygenMe/main;->_decrypt(Ljava/lang/String;)Ljava/lang/String;
+```
+
+修改后：
+
+```smali
+:cond_0
+move v0, v6
+
+goto :goto_0
+
+invoke-static {v0}, LCom/zAWS/KeygenMe/main;->_decrypt(Ljava/lang/String;)Ljava/lang/String;
+```
+
+含义：方法开头已有 `const/4 v6, 0x1`，所以这里把返回寄存器 `v0` 置为 1，然后跳到统一返回点 `:goto_0`。空文件仍走原来的 `move v0, v5` 返回 false；非空文件直接返回 true。
+
+最终效果：
+
+1. 首次安装后没有 `key.txt`，`_check_code()` 仍返回 false，界面显示未注册并保留 `Activate` 菜单。
+2. 点击 `Activate` 后输入任意非空字符串，例如 `abc`、`123`、`bupt-test`，都会写入 `key.txt` 并提示重启。
+3. 重启后 `_check_code()` 读到非空 `key.txt`，直接返回 true，界面显示解锁图标和 `Registerd successfully...` 提示。
+
+截图对比建议：
+
+```bash
+nl -ba crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali | sed -n '400,500p'
+nl -ba crackme_decoded/smali/Com/zAWS/KeygenMe/main.smali | sed -n '1720,1755p'
+```
+
+验证前如果之前已经安装过同包名应用，建议先清掉旧数据，否则残留的 `key.txt` 会让应用一启动就显示已注册：
+
+```bash
+ADB uninstall Com.zAWS.KeygenMe 2>/dev/null
+```
+
+改完后**别动 apktool.yml**，继续执行 3.5 重打包。
+
+
+
+
 
 ### 3.5 重打包
 
