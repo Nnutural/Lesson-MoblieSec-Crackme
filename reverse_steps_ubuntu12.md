@@ -45,8 +45,8 @@ cp -n crackme2.apk _backup/crackme2.apk.orig
 > find /home/softsec -maxdepth 4 -name 'crackme*.apk' 2>/dev/null
 >
 > # ② 是否已有 AVD（重打包后需要装机验证）
-> /usr/share/adt-bundle/sdk/tools/android list avd 2>/dev/null | head -40
-> /usr/share/adt-bundle/sdk/tools/emulator -list-avds 2>/dev/null
+> /usr/share/adt-bundle/sdk/tools/android list avd 2>/dev/null | head -80
+> # 注意：本环境的 emulator 21.1.0 不支持 -list-avds / -list；列 AVD 要用 android list avd。
 >
 > # ③ 是否存在 JD-GUI（env 没列出，看看本地有没有 jar 包）
 > find /home/softsec /opt /usr -maxdepth 5 -type f \
@@ -70,6 +70,7 @@ alias ZIPALIGN='/usr/share/adt-bundle/sdk/tools/zipalign'
 alias JARSIGNER='/usr/lib/java/jdk1.6.0_45/bin/jarsigner'
 alias ADB='/usr/share/adt-bundle/sdk/platform-tools/adb'
 alias EMU='/usr/share/adt-bundle/sdk/tools/emulator'
+alias ANDROID='/usr/share/adt-bundle/sdk/tools/android'
 ```
 
 后文命令统一用这些别名，便于复制。如果走 `/usr/bin/apktool` 这种 wrapper 也行，直接 `apktool d ...` 即可。
@@ -300,11 +301,12 @@ ZIPALIGN -c -v 4 crackme_patched.apk     # 校验
 ### 3.8 启动模拟器并安装
 
 ```bash
-# 列已存在的 AVD（0.1 第 ② 步已经做过，下面假设有一个叫 avd23 的）
-EMU -list-avds
+# 列已存在的 AVD（0.1 第 ② 步已经做过；从输出里的 "Name: xxx" 取 AVD 名）
+# 老版 emulator 21.1.0 不支持 EMU -list-avds / EMU -list。
+ANDROID list avd | sed -n '1,80p'
 
-# 后台起一个，2.3 ~ 4.0 都行；crackme 是 sdk=3 的极老应用，4.0 以下最稳
-EMU -avd <你的AVD名> -no-boot-anim &
+# 后台起一个，2.3 ~ 4.0 都行；crackme.apk 的 sdkVersion=4，4.0 以下最稳
+EMU -avd <Name字段里的AVD名> -no-boot-anim &
 
 # 等开机
 ADB wait-for-device
@@ -314,7 +316,7 @@ ADB shell getprop sys.boot_completed   # 返回 1 表示开机完成
 ADB install -r crackme_patched.apk
 
 # 启动主 Activity（包名/Activity 从 3.1 的 badging 拿到）
-ADB shell am start -n com.lohan.crackme0a/.Main
+ADB shell am start -n Com.zAWS.KeygenMe/.main
 ```
 
 ### 3.9 截图取证
@@ -475,7 +477,7 @@ ADB shell am start -n com.lohan.crackme0a/com.lohan.crackme0a.Main
 | `apktool b` 报 `Multiple resources` / 资源冲突 | 是不是改了 `res/values/public.xml`？不要改 |
 | `jarsigner` 报 `unable to retrieve key` | `-keypass` 是不是和创建时一致；JDK1.6 默认 storepass = keypass，跟着上面写就行 |
 | `adb install` 报 `INSTALL_PARSE_FAILED_NO_CERTIFICATES` | 没签名 / 签名失败；回到 3.6 |
-| `INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES` | 已经装过一个不同签名的同包名应用；`adb uninstall com.lohan.crackme0a` 再装 |
+| `INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES` | 已经装过一个不同签名的同包名应用；任务 3 用 `ADB uninstall Com.zAWS.KeygenMe`，任务 4 用 `ADB uninstall com.lohan.crackme0a`，再重新安装 |
 | `INSTALL_FAILED_OLDER_SDK` | AVD 版本比应用 minSdk 还低；换 API 8+ 的 AVD（本应用 minSdk=3，几乎不会遇到） |
 | 模拟器起不来 / 黑屏 | 加 `-no-window -no-audio -gpu off`；VM 里 KVM 通常不可用，纯软件渲染慢但能跑 |
 
